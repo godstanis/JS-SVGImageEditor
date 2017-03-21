@@ -1,0 +1,21 @@
+
+.brush-preview{
+    width:30px;
+    height:20px;
+}
+
+.radio-figure{
+    display:inline-block;
+}
+.radio-figure label > input{ 
+    visibility: hidden;
+    position: absolute;
+}
+.radio-figure label > input + img{
+    cursor:pointer;
+    border:2px solid transparent;
+}
+.radio-figure label > input:checked + img{
+    border:4px solid #25DA6D;
+    border-radius:5px;
+}

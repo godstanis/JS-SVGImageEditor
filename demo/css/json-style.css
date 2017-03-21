@@ -1,0 +1,12 @@
+#generate_json_block{
+    display:inline-block;
+}
+#json_input_block{
+    display:none;
+}
+#json_input_block textarea{
+    width:100%;
+}
+#generate_json_block:hover #json_input_block{
+    display:block;
+}
