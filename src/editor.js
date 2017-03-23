@@ -41,7 +41,7 @@ $('#svg-area').mousemove(function(e){
         var drawable = ['rectangle', 'arrow', 'line', 'ellipse'];
 
         if( drawable.indexOf(selectedItem) != -1 ){
-            drawSVG.createByString(selectedItem, itemId);
+            drawSVG.createElement(itemId);
         }
 
     }
@@ -51,7 +51,7 @@ $('#svg-area').mousemove(function(e){
     if (e.button === 0){ // draw only if left-mouse-button is pressed
         drawStatus.isDrawing = false;
 
-        var supported_for_save = ['path', 'ellipse'];
+        var supported_for_save = ['path'];
 
         var element = document.getElementById(itemId);
 
@@ -66,11 +66,11 @@ $('#svg-area').mousemove(function(e){
 /*
     Eraser click logic
 */
-$(document).on('click','path, ellipse',function(e){
+$(document).on('click','path',function(e){
 
     if(selectedItem == 'eraser'){
 
-        var deletable = ['path', 'ellipse']; // deletable object tags
+        var deletable = ['path']; // deletable object tags
 
         if(deletable.indexOf(e.target.tagName) != -1 && confirm('Are you sure?'))
         {
@@ -79,6 +79,15 @@ $(document).on('click','path, ellipse',function(e){
         }
     }
 });
+
+/*
+    Marker click logic
+*/
+/*
+// TODO
+
+*/
+
 
 //editor dragging actions
 

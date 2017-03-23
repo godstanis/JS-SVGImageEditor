@@ -31,7 +31,7 @@ var drawSVG = {
     },
 
     deleteObject: function(id){ //deletes an object from DOM
-        var deletable = ['path', 'ellipse'];//deletable object tags
+        var deletable = ['path'];//deletable object tags
         var element = document.getElementById(id);
 
         if(deletable.indexOf(element.tagName) != -1)
@@ -46,30 +46,9 @@ var drawSVG = {
     createElement: function(id){
         PathHelper.itemId = id; // Change PathHelper itemId
         var element = this.returnElement();
-        var strokeColor = this.strokeColor;
-        var strokeWidth = this.strokeWidth;
-        var HTMLhelper = this.HTMLhelper;
 
-        return {
-            path: function(){
-                element.innerHTML += HTMLhelper.renderPath(id, strokeWidth, strokeColor);
-            },
-            ellipse: function(){
-                element.innerHTML += HTMLhelper.renderEllipse(id, strokeWidth, strokeColor);
-            }
-        }
-    },
+        element.innerHTML += this.HTMLhelper.renderPath(id, this.strokeWidth, this.strokeColor);
 
-    createObj: function (itemId, type){
-        switch(type)
-        {
-            case 'ellipse':
-                this.createElement(itemId).ellipse();
-            break;
-            case 'path':
-                this.createElement(itemId).path();
-            break;
-        }
     },
 
     /*
@@ -80,11 +59,13 @@ var drawSVG = {
     */
     drawObject: function(itemId = PathHelper.itemId, do_create = true){
         var current = this;
-        function createManage(id, type)
+
+        // Do not create the element if param false given
+        function createManage(id)
         {
             if(do_create)
             {
-                current.createObj(id, type);
+                this.createElement(itemId);
             }
             else
             {
@@ -94,8 +75,8 @@ var drawSVG = {
 
         return {
             rectangle: function(fX, fY, lX, lY){
-                //current.createObj(itemId, 'path');
-                createManage(itemId, 'path');
+
+                createManage(itemId);
                 PathHelper.moveTo(fX, fY);
                 PathHelper.lineTo(fX, lY);
                 PathHelper.lineTo(lX, lY);
@@ -104,17 +85,36 @@ var drawSVG = {
                 PathHelper.closePath();
             },
             ellipse: function (fX, fY, lX, lY){
-                //current.createObj(itemId, 'ellipse');
-                createManage(itemId, 'ellipse');
-                var ellipse = document.getElementById(itemId);
-                ellipse.setAttribute('cx', fX - (fX-lX)/2);
-                ellipse.setAttribute('cy', fY - (fY-lY)/2);
-                ellipse.setAttribute('rx', Math.abs(fX-lX)/2);
-                ellipse.setAttribute('ry', Math.abs(fY-lY)/2);
+
+                createManage(itemId);
+
+                var step = 2*Math.PI/40;  // see note 1
+                var cx = fX; 
+                var cy = fY;
+                var rx = Math.abs(fX-lX)/2;
+                var ry = Math.abs(fY-lY)/2;
+
+                //Ellipse drawing algorithm
+                for(var theta=0;  theta < 2*Math.PI;  theta+=step)
+                { 
+                    var x = cx + rx*Math.cos(theta) - (fX-lX)/2;
+                    var y = cy - ry*Math.sin(theta) - (fY-lY)/2;  
+                    if(theta == 0)
+                    {
+                        PathHelper.moveTo(x, y);
+                    }
+                    else
+                    {
+                        PathHelper.lineTo(x, y);
+                    }
+                    
+                }
+
+                PathHelper.closePath();
             },
             arrow: function(fX, fY, lX, lY){
-                //current.createObj(itemId, 'path');
-                createManage(itemId, 'path');
+
+                createManage(itemId);
                 // Draws the line
                 PathHelper.moveTo(fX, fY);
                 PathHelper.lineTo(lX, lY);
@@ -208,10 +208,6 @@ var drawSVG = {
         renderPath: function(id, strokeWidth = "4px", strokeColor = "green", fill = "none"){
             return '<path class="svg-element" id="'+id+'" stroke-width="'+strokeWidth+'" fill="'+fill+'" stroke="'+strokeColor+'"></path>';
         },
-
-        renderEllipse: function(id, strokeWidth = "4px", strokeColor = "green", fill = "none"){
-            return '<ellipse class="svg-element" id="'+id+'" stroke="'+strokeColor+'" stroke-width="'+strokeWidth+'" fill="'+fill+'" />';
-        }
     },
 
     /*
@@ -228,20 +224,6 @@ var drawSVG = {
                 case "line": this.drawLine(itemId, lX, lY, 8)
                     break;
                 case "ellipse": this.drawObject(itemId, false).ellipse(fX, fY, lX, lY)
-            }
-    },
-
-    createByString(string, itemId){
-
-        switch(string)
-            {
-                case "rectangle": this.createElement(itemId).path();
-                    break;
-                case "arrow": this.createElement(itemId).path();
-                    break;
-                case "line": this.createElement(itemId).path();
-                    break;
-                case "ellipse": this.createElement(itemId).ellipse();
             }
     },
 

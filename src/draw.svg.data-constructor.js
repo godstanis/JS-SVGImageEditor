@@ -6,20 +6,9 @@
 var dataConstructor = {
     elements: {}, // object that contains our svg elements
     storeElement: function(element){ // function to add new svg element to 'elements' object.
-
-        var type = element.tagName;
         var item_id = element.id;
-        var color = element.getAttribute('stroke');
-        var width = element.getAttribute('stroke-width');
 
-        switch (type){
-            case 'path':
-                this.elements[item_id] = this.createObjectFromElement().path(element);
-            break;
-            case 'ellipse':
-                this.elements[item_id] = this.createObjectFromElement().ellipse(element);
-            break;
-        }
+        this.elements[item_id] = this.createObjectFromPath(element);
     },
 
     removeElement: function(element_id){
@@ -28,32 +17,18 @@ var dataConstructor = {
     },
 
     /*
-        Generates js object representing the given html svg element
+        Generates js object representing the given html svg path element
     */
-    createObjectFromElement: function(){
+    createObjectFromPath: function(element){
+
         return {
-            path: function(element){
-                return {
-                    'id': element.id,
-                    'type': element.tagName,
-                    'color': element.getAttribute('stroke'),
-                    'width': element.getAttribute('stroke-width'),
-                    'd': element.getAttribute('d'),
-                };
-            },
-            ellipse: function(element){
-                return {
-                    'id': element.id,
-                    'type': element.tagName,
-                    'color': element.getAttribute('stroke'),
-                    'width': element.getAttribute('stroke-width'),
-                    'cx': element.getAttribute('cx'),
-                    'cy': element.getAttribute('cy'),
-                    'rx': element.getAttribute('rx'),
-                    'ry': element.getAttribute('ry'),
-                };
-            }
-        }
+            'id': element.id,
+            'type': element.tagName,
+            'color': element.getAttribute('stroke'),
+            'width': element.getAttribute('stroke-width'),
+            'd': element.getAttribute('d'),
+        };
+            
     },
     generateJSON: function(){ //generates a JSON string of elements collection
         return JSON.stringify(this.elements);
@@ -77,20 +52,10 @@ var dataConstructor = {
             switch(curObj['type']){
                 case 'path':
 
-                    drawSVG.createElement(id).path();
+                    drawSVG.createElement(id);
                     element = document.getElementById(id);
  
                     this.constructElementFromObj().path(element, curObj);
-
-                    this.storeElement(element);
-
-                break;
-                case 'ellipse':
-
-                    drawSVG.createElement(id).ellipse();
-                    element = document.getElementById(id);
-
-                    this.constructElementFromObj().ellipse(element, curObj);
 
                     this.storeElement(element);
 
@@ -107,15 +72,6 @@ var dataConstructor = {
                 element.setAttribute('d', obj['d']);
                 element.setAttribute('stroke', obj['color']);
                 element.setAttribute('stroke-width', obj['width']);
-            },
-            ellipse: function(element, obj){
-
-                element.setAttribute('stroke', obj['color']);
-                element.setAttribute('stroke-width', obj['width']);
-                element.setAttribute('cx', obj['cx']);
-                element.setAttribute('cy', obj['cy']);
-                element.setAttribute('rx', obj['rx']);
-                element.setAttribute('ry', obj['ry']);
             }
         }
     },
