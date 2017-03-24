@@ -65,8 +65,8 @@ $('#svg-area').mousemove(function(e){
 
 //editor dragging actions
 
-var editStatus = {
-    isEditing: false,
+var dragStatus = {
+    isDragging: false,
     fX: 0,
     fY: 0,
     lX:0,
@@ -75,27 +75,29 @@ var editStatus = {
 
 $('#svg-editor-area').mousemove(function(e){
 
-    var isDragging = (e.button === 1) || (selectedItem == "drag");
-
-    if(editStatus.isEditing && isDragging)
+    if(dragStatus.isDragging)
     {
         var curPosEdit = svgEditor.getCurPos(e);
-            editStatus.lX = curPosEdit.x;
-            editStatus.lY = curPosEdit.y;
+            dragStatus.lX = curPosEdit.x;
+            dragStatus.lY = curPosEdit.y;
 
-        svgEditor.drag(editStatus.fX, editStatus.fY, editStatus.lX, editStatus.lY);
+        svgEditor.drag(dragStatus.fX, dragStatus.fY, dragStatus.lX, dragStatus.lY);
     }
 
 })
 .mousedown(function(e){
-    editStatus.isEditing = true;
+    var actionIsDrag = (e.button === 1) || (selectedItem == "drag");
 
+    if( actionIsDrag ){
+        dragStatus.isDragging = true;
+    }
+    
     var curPosEdit = svgEditor.getCurPos(e);
-        editStatus.fX = curPosEdit.x;
-        editStatus.fY = curPosEdit.y;
+        dragStatus.fX = curPosEdit.x;
+        dragStatus.fY = curPosEdit.y;
 })
 .mouseup(function(e) {
-    editStatus.isEditing = false;
+    dragStatus.isDragging = false;
 });
 
 /*
