@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Document</title>
+    <title>JS-SVG Image Editor</title>
     <script
     src="https://code.jquery.com/jquery-3.1.1.min.js"
     integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
@@ -22,9 +22,27 @@
 
 </head>
 <body>
+<div class="zoom-panel">
+    <button class="zoom-btn zoom-svg-in" title="Zoom-in">+</button>
+    <button class="zoom-btn zoom-svg-out" title="Zoom-out">-</button>
+</div>
+
+<div class="json-management-panel">
+    <button id="generateJson">Generate JSON</button>
+
+    <div id="generate_json_block">
+        <button>Generate from JSON</button>
+
+        <div id="json_input_block">
+            <textarea name="json_input" id="json_input" cols="30" rows="10"></textarea>
+            <button id="generateFromJson">Generate</button>
+        </div>
+    </div>
+</div>
+
 <div class="control-panel">
     <form id="select-item">
-        Color: <input class="jscolor" value="29AB22" name="strokeColor"> <br>
+        Color: <input class="jscolor" value="29AB22" name="strokeColor">
         <div class="radio-tab">
             <div class="radio-figure">
                 <label for="rectangle-radio">
@@ -70,22 +88,7 @@
             </div>
         </div>
     </form>
-
-    <button class="zoom-btn zoom-svg-in" title="Zoom-in">+</button>
-    <button class="zoom-btn zoom-svg-out" title="Zoom-out">-</button>
-
     <button id="initImage">initializeIMG</button>
-    <button id="generateJson">Generate JSON</button>
-    <br>
-    <div id="generate_json_block">
-        <button>Generate from JSON</button>
-
-        <div id="json_input_block">
-            <textarea name="json_input" id="json_input" cols="30" rows="10"></textarea>
-            <button id="generateFromJson">Generate</button>
-        </div>
-    </div>
-
     <p><b id="current-pos">(X;Y)</b></p>
     
 </div>

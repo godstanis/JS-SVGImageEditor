@@ -1,18 +1,18 @@
 .ds-marker{
-    width:25px;height:25px;
-    background-color:yellow;
-    position:absolute;
-    top:0;
-    border-radius:50%;
+    width:25px; height:25px;
+    background-color: yellow;
+    position: absolute;
+    top: 0;
+    border-radius: 50%;
 }
 .ds-marker-text{
-    display:none;
-    background-color:white;
-    position:absolute;
-    width:100px;
-    left:28px;
-    top:5px;
+    display: none;
+    background-color: white;
+    position: absolute;
+    width: 100px;
+    left: 28px;
+    top: 5px;
 }
 .ds-marker:hover .ds-marker-text{
-    display:block;
+    display: block;
 }

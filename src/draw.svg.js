@@ -88,7 +88,7 @@ var drawSVG = {
 
                 createManage(itemId);
 
-                var step = 2*Math.PI/40;  // see note 1
+                var step = 2*Math.PI/40;  // drawing frequency
                 var cx = fX; 
                 var cy = fY;
                 var rx = Math.abs(fX-lX)/2;
@@ -191,9 +191,9 @@ var drawSVG = {
                 counter = 0;
                 var path = document.getElementById(itemId);
                 if (path.getAttribute('d')) {
-                    PathHelper.lineTo(X, Y, itemId); //if path for
+                    PathHelper.lineTo(X, Y, itemId);
                 } else {
-                    PathHelper.moveTo(X, Y, itemId);
+                    PathHelper.moveTo(X, Y, itemId); // if path has not been started yet
                 }
             }
         }

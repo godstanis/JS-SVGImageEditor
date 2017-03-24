@@ -35,7 +35,7 @@ $('#svg-area').mousemove(function(e){
 
         itemId = (+ new Date()).toString(); // generate random unique id for figure
 
-        drawSVG.setWidth('8px');
+        drawSVG.setWidth('4px');
         drawSVG.setColor('#'+strokeColor); // color from jscolor element on control panel
         
         var drawable = ['rectangle', 'arrow', 'line', 'ellipse'];
@@ -61,32 +61,6 @@ $('#svg-area').mousemove(function(e){
         }
     }
 });
-
-
-/*
-    Eraser click logic
-*/
-$(document).on('click','path',function(e){
-
-    if(selectedItem == 'eraser'){
-
-        var deletable = ['path']; // deletable object tags
-
-        if(deletable.indexOf(e.target.tagName) != -1 && confirm('Are you sure?'))
-        {
-            drawSVG.deleteObject(e.target.id);
-            dataConstructor.removeElement(e.target.id);
-        }
-    }
-});
-
-/*
-    Marker click logic
-*/
-/*
-// TODO
-
-*/
 
 
 //editor dragging actions
@@ -124,6 +98,30 @@ $('#svg-editor-area').mousemove(function(e){
     editStatus.isEditing = false;
 });
 
+/*
+    Eraser click logic
+*/
+$(document).on('click','path',function(e){
+
+    if(selectedItem == 'eraser'){
+
+        var deletable = ['path']; // deletable object tags
+
+        if(deletable.indexOf(e.target.tagName) != -1 && confirm('Are you sure?'))
+        {
+            drawSVG.deleteObject(e.target.id);
+            dataConstructor.removeElement(e.target.id);
+        }
+    }
+});
+
+/*
+    Marker click logic
+*/
+/*
+// TODO
+*/
+
 
 /*
     Zoom logic events.
@@ -148,5 +146,6 @@ $('.zoom-svg-out').click(function(){
 $('#initImage').click(function(){
     drawSVG.clear();
     dataConstructor.clear();
-    svgEditor.initImage('images/test-img/testbg.jpg');
+    var image = prompt('Enter image url:', 'images/test-img/testbg.jpg');
+    svgEditor.initImage(image);
 });

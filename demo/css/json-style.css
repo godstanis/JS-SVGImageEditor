@@ -1,12 +1,24 @@
 #generate_json_block{
-    display:inline-block;
+    display: block;
 }
 #json_input_block{
-    display:none;
+    display: none;
 }
 #json_input_block textarea{
-    width:100%;
+    width: 100%;
 }
 #generate_json_block:hover #json_input_block{
-    display:block;
+    display: block;
+}
+
+.json-management-panel{
+    position: fixed;
+    top: 60px;
+    z-index: 999;
+    display: inline-block;
+}
+
+.json-management-panel button{
+    height: 32px;
+    text-align: center;
 }
