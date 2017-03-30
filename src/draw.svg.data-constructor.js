@@ -1,5 +1,5 @@
 /*
-    Simple object constructor.
+    Simple object constructor for drawSVG component.
     Can be used to generate json representation of drawing objects for later saving.
 */
 
@@ -33,14 +33,14 @@ var dataConstructor = {
     generateJSON: function(){ //generates a JSON string of elements collection
         return JSON.stringify(this.elements);
     },
-    generateObject(json_string)
+    generateObject: function(json_string)
     {
         return JSON.parse(json_string);
     },
     /*
         Draws the on-screen elements with drawSVG using JSON
     */
-    generateElementsObjFromJson(drawSVG, json_string)
+    generateElementsObjFromJson: function(drawSVG, json_string)
     {
 
         var obj = this.generateObject(json_string);

@@ -15,11 +15,11 @@ var drawSVG = {
     init: function(element){ //This method will render marker for arrow tip inside <svg>
         this.element = element;
     },
-    setColor(color)
+    setColor: function(color)
     {
         this.strokeColor = color;
     },
-    setWidth(width)
+    setWidth: function(width)
     {
         this.strokeWidth = width;
     },
@@ -214,7 +214,7 @@ var drawSVG = {
         Next xxxByString methods provide simple interface for 
         string based switching (for example Radio buttons input)
     */
-    drawByString(string, itemId, fX, fY, lX, lY){ 
+    drawByString: function(string, itemId, fX, fY, lX, lY){ 
         switch(string)
             {
                 case "rectangle": this.drawObject(itemId, false).rectangle(fX, fY, lX, lY)

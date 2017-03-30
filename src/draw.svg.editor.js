@@ -41,7 +41,8 @@ var svgEditor = {
         var scale = 'scale('+this.coordScale+')';
         this.returnElement().workArea.setAttribute('style', 'transform:'+scale+' '+translate);
     },
-    initImage: function(image_path = '') // initialize image and adjust editor elements sizing
+    // initialize image and adjust editor elements sizing
+    initImage: function( image_path )
     {
 
         var bgElement = this.returnElement().background;
