@@ -1,7 +1,7 @@
 
 .brush-preview{
-    width: 30px;
-    height: 20px;
+    width: 32px;
+    height: 32px;
 }
 
 .radio-figure{
@@ -13,9 +13,15 @@
 }
 .radio-figure label > input + img{
     cursor: pointer;
-    border: 2px solid transparent;
+    border: 3px solid transparent;
 }
 .radio-figure label > input:checked + img{
-    border: 4px solid #25DA6D;
+    border: 3px solid #25DA6D;
     border-radius: 5px;
+}
+
+.radio-figure img{
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
 }
