@@ -88,7 +88,8 @@
             </div>
         </div>
     </form>
-    <button id="initImage">initializeIMG</button>
+    <button id="initImage">Initialize Image</button>
+    <button id="centerImage">Center Image</button>
     <p><b id="current-pos">(X;Y)</b></p>
     
 </div>
@@ -96,7 +97,7 @@
 <div id="svg-editor-area">
     <div id="svg-work-area">
         <div id="svg-image-couple">
-            <svg id="svg-area">
+            <svg id="svg-area"  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" shape-rendering="auto">
             </svg>
             <div id="bg-element">
                 <img id="bg-element-image" src="" alt="image not loaded">
@@ -163,6 +164,12 @@ $('#generateJson').click(function(){
 
 });
     
+</script>
+
+<script>
+    $('#centerImage').click(function(){
+        svgEditor.center();
+    });
 </script>
 
 <script src="../src/editor.js"></script>

@@ -19,23 +19,38 @@ var svgEditor = {
             svg:        document.getElementById(this.svgElementId),
         }
     },
+    center: function(){
+        var windowCenterX = window.innerWidth / 2;
+        var windowCenterY = window.innerHeight / 2;
+
+        var svgRect = this.returnElement().svg.getBoundingClientRect();
+
+        var currentSvgCenterX = (svgRect.width / 2) / this.coordScale;
+        var currentSvgCenterY = (svgRect.height / 2) / this.coordScale;
+
+        this.curX = windowCenterX - currentSvgCenterX;
+        this.curY = windowCenterY - currentSvgCenterY;
+
+        this.updateTransformation();
+
+    },
     drag: function(fX, fY, lX, lY){
         this.curX += lX - fX;
         this.curY += lY - fY;
-        this.setTransformation();
+        this.updateTransformation();
     },
     scale: function (scale){
         scale = parseFloat(scale.toFixed(2));
 
         if (( this.minScale <= scale ) && ( scale <= this.maxScale )){
             this.coordScale = scale
-            this.setTransformation();
+            this.updateTransformation();
             return true;
         }
 
         return false;
     },
-    setTransformation: function()
+    updateTransformation: function()
     {
         var translate = 'translate('+this.curX+'px,'+this.curY+'px)';
         var scale = 'scale('+this.coordScale+')';
@@ -57,9 +72,8 @@ var svgEditor = {
             svgElement.style['width'] = imageWidth+'px';
             svgElement.style['height'] = imageHeight+'px';
 
-            bgElement.style['width'] = imageWidth+'px';
-            bgElement.style['height'] = imageHeight+'px';
             bgElement.style['top'] = '-'+(imageHeight)+'px';
+
         }
 
         this.scale(1);
