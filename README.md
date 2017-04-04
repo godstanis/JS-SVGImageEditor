@@ -1,6 +1,6 @@
 # JS-SVGImageEditor
 
-<img src="https://s3.postimg.org/fe78k5mr7/js_img_edit_sample.jpg">
+<img src="https://raw.githubusercontent.com/Stasgar/JS-SVGImageEditor/master/github-prewiev.png">
 
 ### About
 Simple image editor, that uses SVG.
