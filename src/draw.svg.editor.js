@@ -3,8 +3,8 @@ var svgEditor = {
     backgroundElementId: "",
     svgElementId: "",
     coordScale: 1.00,
-    maxScale: 1.8,
-    minScale: 0.5,
+    maxScale: 2,
+    minScale: 0.3,
     curX: 0,
     curY:0,
     init: function(workAreaId, svgElementId, backgroundElementId){ 
@@ -76,13 +76,19 @@ var svgEditor = {
 
         }
 
+        function setImage(image_element, image_path){
+            image_element.setAttribute('src', image_path);
+        }
+
         this.scale(1);
-        bgImg.setAttribute('src', image_path);
+
+        setImage(bgImg, image_path);
 
         bgImg.onload = function(){
             initImgSizing();
-        };
-
+            this.center();
+        }.bind(this);
+        
     },
     getOffset: function(element){ //Service method, providing current information about <svg> relative position
         var box = element.getBoundingClientRect();
