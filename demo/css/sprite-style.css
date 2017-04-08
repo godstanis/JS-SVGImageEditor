@@ -1,0 +1,65 @@
+.sprite {
+    background-image: url(../images/editor/sprite-pack.png);
+    background-repeat: no-repeat;
+    display: block;
+}
+
+.sprite-arrow {
+    width: 32px;
+    height: 32px;
+    background-position: -5px -5px;
+}
+
+.sprite-center {
+    width: 32px;
+    height: 32px;
+    background-position: -47px -5px;
+}
+
+.sprite-drag {
+    width: 32px;
+    height: 32px;
+    background-position: -89px -5px;
+}
+
+.sprite-ellipse {
+    width: 32px;
+    height: 32px;
+    background-position: -5px -47px;
+}
+
+.sprite-eraser {
+    width: 32px;
+    height: 32px;
+    background-position: -47px -47px;
+}
+
+.sprite-init-img {
+    width: 32px;
+    height: 32px;
+    background-position: -89px -47px;
+}
+
+.sprite-line {
+    width: 32px;
+    height: 32px;
+    background-position: -7px -89px;
+}
+
+.sprite-marker {
+    width: 32px;
+    height: 32px;
+    background-position: -51px -89px;
+}
+
+.sprite-rectangle {
+    width: 32px;
+    height: 32px;
+    background-position: -93px -89px;
+}
+
+.sprite-save-on-server {
+    width: 32px;
+    height: 32px;
+    background-position: -131px -5px;
+}

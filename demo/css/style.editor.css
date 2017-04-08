@@ -26,7 +26,7 @@ body, html{
     border-radius: 0 0 5px 5px;
     box-shadow: 0px 0px 15px black;
 
-    padding-top: 5px;
+    padding: 5px;
 }
 
 #svg-editor-area{
@@ -84,15 +84,20 @@ body, html{
 .zoom-panel button{
     width: 32px;
     height: 32px;
-    font-size: 160%;
-    text-align: center;
-    
     border: none;
     border-radius: 5px;
+
+    font-size: 160%;
+    text-align: center;
+    color:#0071BC;
+    font-weight: bold;
 
     margin-right: 5px;
 }
 
+.functional-btns{
+    margin:3px;
+}
 
 @media only screen and (max-width:800px){
     .control-panel{
@@ -120,5 +125,11 @@ body, html{
         padding:10px;
 
         bottom:0;
+    }
+
+    .jscolor{
+        height:30px;
+        position: relative;
+        right:100px;
     }
 }

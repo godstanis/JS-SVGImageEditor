@@ -97,7 +97,10 @@ var svgEditor = {
             left: box.left + pageXOffset
         };
     },
-    getCurPos: function(e, scale = this.coordScale){ //Returns current mouse position in relative <svg> coordinates
+    getCurPos: function(e, scale){ //Returns current mouse position in relative <svg> coordinates
+        if(scale === undefined){
+            scale = this.coordScale;
+        }
         var svg = this.returnElement().workArea;
         var x = e.pageX - this.getOffset(svg).left;
         var y = e.pageY - this.getOffset(svg).top;

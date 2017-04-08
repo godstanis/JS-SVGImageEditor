@@ -11,16 +11,16 @@
     visibility: hidden;
     position: absolute;
 }
-.radio-figure label > input + img{
+.radio-figure label > input + i{
     cursor: pointer;
     border: 3px solid transparent;
 }
-.radio-figure label > input:checked + img{
+.radio-figure label > input:checked + i{
     border: 3px solid #27C23D;
     border-radius: 5px;
 }
 
-.radio-figure img{
+.radio-figure i{
     background-color: white;
     border-radius: 5px;
 }

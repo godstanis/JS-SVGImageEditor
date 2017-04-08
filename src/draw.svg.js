@@ -57,7 +57,14 @@ var drawSVG = {
         fX, fY - first (X;Y) coordinates to start from
         lX, lY - last (X;Y) coordinates to end the figure
     */
-    drawObject: function(itemId = PathHelper.itemId, do_create = true){
+    drawObject: function(itemId, do_create){
+        if(itemId === undefined){
+            itemId = PathHelper.itemId;
+        }
+        if(do_create === undefined){
+            do_create = true;
+        }
+
         var current = this;
 
         // Do not create the element if param false given
@@ -184,7 +191,10 @@ var drawSVG = {
         //Decrease to draw lines more often; increase to draw lines less often.
         //Greater numbers will produce 'low poly' line effect.
         var TIME_BETWEEN_LINES_TICKS = 10;
-        function drawLineH(itemId, X, Y, time_between_lines_ticks = TIME_BETWEEN_LINES_TICKS) {
+        function drawLineH(itemId, X, Y, time_between_lines_ticks) {
+            if(time_between_lines_ticks === undefined){
+                time_between_lines_ticks = TIME_BETWEEN_LINES_TICKS;
+            }
             counter++;
             //If a line was recently ended, we won't do anything for 10 ticks
             if (counter>=time_between_lines_ticks) {
@@ -205,7 +215,16 @@ var drawSVG = {
     */
     HTMLhelper: {
 
-        renderPath: function(id, strokeWidth = "4px", strokeColor = "green", fill = "none"){
+        renderPath: function(id, strokeWidth, strokeColor, fill){
+            if(strokeWidth === undefined){
+                strokeWidth = "4px";
+            }
+            if(strokeColor === undefined){
+                strokeColor = "green";
+            }
+            if(fill === undefined){
+                fill = "none";
+            }
             return '<path class="svg-element" id="'+id+'" stroke-width="'+strokeWidth+'" fill="'+fill+'" stroke="'+strokeColor+'"></path>';
         },
     },
@@ -221,7 +240,7 @@ var drawSVG = {
                     break;
                 case "arrow": this.drawObject(itemId, false).arrow(fX, fY, lX, lY)
                     break;
-                case "line": this.drawLine(itemId, lX, lY, 8)
+                case "line": this.drawLine(itemId, lX, lY, 4)
                     break;
                 case "ellipse": this.drawObject(itemId, false).ellipse(fX, fY, lX, lY)
             }
@@ -236,21 +255,30 @@ var PathHelper = {
     itemId:false,
 
     //Moves 'virtual brush' to the provided coordinates. If not used - 'virtual brush' will start from (0;0)
-    moveTo: function(X, Y, itemId = this.itemId){ 
+    moveTo: function(X, Y, itemId){
+        if(itemId === undefined){
+            itemId = this.itemId;
+        }
         var path = document.getElementById(itemId)
         path.setAttribute('d', "M"+X.toString()+","+Y.toString());
         return this;
     },
 
     //Draws the line from 'virtual brush' position to the provided coordinates
-    lineTo: function(X, Y, itemId = this.itemId){ 
+    lineTo: function(X, Y, itemId){
+        if(itemId === undefined){
+            itemId = this.itemId;
+        }
         var path = document.getElementById(itemId)
         path.setAttribute('d', path.getAttribute('d') + "L"+X.toString()+","+Y.toString());
         return this;
     },
 
     //Closes the path connectig the first point with the last
-    closePath: function(itemId = this.itemId){
+    closePath: function(itemId){
+        if(itemId === undefined){
+            itemId = this.itemId;
+        }
         var path = document.getElementById(itemId)
         path.setAttribute('d', path.getAttribute('d') + "z");
     },

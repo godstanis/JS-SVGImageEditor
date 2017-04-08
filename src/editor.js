@@ -176,10 +176,6 @@ $('#svg-area').on( "touchmove" , function( e ) {
 
         drawSVG.drawByString(selectedItem, itemId, drawStatus.fX, drawStatus.fY, drawStatus.lX, drawStatus.lY);
     }
-    
-    //Show coordinates in demo:
-    str = 'X:'+svgEditor.getCurPos(e_touch).x+'  Y:'+svgEditor.getCurPos(e_touch).y;
-    $('#current-pos').html(str);
 
 })
 .on( "touchstart" , function(e){
@@ -191,8 +187,6 @@ $('#svg-area').on( "touchmove" , function( e ) {
     drawStatus.fY = curPos.y;
 
     itemId = (+ new Date()).toString(); // generate random unique id for figure
-
-    drawSVG.setColor('#'+strokeColor); // color from jscolor element on control panel
     
     var drawable = ['rectangle', 'arrow', 'line', 'ellipse'];
 
