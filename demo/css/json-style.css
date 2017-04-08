@@ -22,3 +22,9 @@
     height: 32px;
     text-align: center;
 }
+
+@media only screen and (max-width:650px){
+    .json-management-panel{
+        display:none;
+    }
+}

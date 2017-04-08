@@ -7,7 +7,7 @@
 .radio-figure{
     display: inline-block;
 }
-.radio-figure label > input{ 
+.radio-figure label > input{
     visibility: hidden;
     position: absolute;
 }
@@ -16,12 +16,15 @@
     border: 3px solid transparent;
 }
 .radio-figure label > input:checked + img{
-    border: 3px solid #25DA6D;
+    border: 3px solid #27C23D;
     border-radius: 5px;
 }
 
 .radio-figure img{
     background-color: white;
     border-radius: 5px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+.radio-tab{
+    margin:5px;
 }

@@ -2,15 +2,17 @@ body, html{
     width:100%; height:100%;
     padding:0; margin:0;
 
-    background-image: url('../images/editor/background.jpg');
-    background-size: 40%;
+    background-color: #0273CD;
+    background-image: url('../images/editor/editor-background.jpg');
+    background-size: 1000px;
     background-repeat: repeat;
-    background-color: #6E6E6E;
+
+    box-shadow: inset 0px 0px 80px #202020;
 }
 
 .control-panel{
-    left: 35%;
-    width: 30%;
+    left: 30%;
+    width: 40%;
     position: fixed;
     top: 0;
 
@@ -21,8 +23,10 @@ body, html{
     color: white;
     text-align: center;
 
-    border-radius: 0 0 10px 10px;
+    border-radius: 0 0 5px 5px;
     box-shadow: 0px 0px 15px black;
+
+    padding-top: 5px;
 }
 
 #svg-editor-area{
@@ -51,7 +55,7 @@ body, html{
 
 #bg-element img,
 #svg-image-couple svg{
-  display: block;
+    display: block;
 }
 
 .jscolor{
@@ -72,7 +76,7 @@ body, html{
     background-color: #546575;
     background-color: rgba(84,101,117,0.6);
 
-    border-radius: 0 0 10px 0;
+    border-radius: 0 0 5px 0;
     box-shadow: 0px 0px 15px black;
 
     padding:10px;
@@ -86,5 +90,35 @@ body, html{
     border: none;
     border-radius: 5px;
 
-    margin-left: 5px;
+    margin-right: 5px;
+}
+
+
+@media only screen and (max-width:800px){
+    .control-panel{
+        left:0;
+        width: 100%;
+        position: fixed;
+        top: 0;
+
+        display: inline-block;
+        z-index: 1;
+        background-color: #546575;
+        background-color: rgba(84,101,117,0.6);
+        color: white;
+        text-align: center;
+
+        border-radius: 0 0 10px 10px;
+        box-shadow: 0px 0px 15px black;
+    }
+
+    .zoom-panel{
+
+        border-radius: 0 10px 0px 0;
+        box-shadow: 0px 0px 15px black;
+
+        padding:10px;
+
+        bottom:0;
+    }
 }

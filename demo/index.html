@@ -1,7 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="touch-action:pan-down">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, , user-scalable=0">
+    <link rel="icon" href="favicon.ico">
     <title>JS-SVG Image Editor</title>
     <script
     src="https://code.jquery.com/jquery-3.1.1.min.js"
@@ -42,7 +44,7 @@
 
 <div class="control-panel">
     <form id="select-item">
-        Color: <input class="jscolor" value="29AB22" name="strokeColor">
+        Color: <input class="jscolor" value="00AB03" name="strokeColor" readonly="true">
         <div class="radio-tab">
             <div class="radio-figure">
                 <label for="rectangle-radio">
@@ -88,8 +90,15 @@
             </div>
         </div>
     </form>
+    <div>
+        <label for="stroke-width-range">Stroke width:</label>
+        <input id="stroke-width-range" type="range" min="1" max="32" step="1" value="4">
+        <span style="display:inline-block;width:20px;" id="stroke-width-output">4</span>
+    </div>
+    <br>
     <button id="initImage">Initialize Image</button>
     <button id="centerImage">Center Image</button>
+    <button id="saveImage">Save Image on server</button>
     <p><b id="current-pos">(X;Y)</b></p>
     
 </div>
@@ -122,11 +131,15 @@ svgEditor.init('svg-work-area', 'svg-area', 'bg-element');
     Ui interaction code
 */
 var selectedItem = $('input[name=item]:checked', '#select-item').val();
-var strokeColor = $('input[name=strokeColor]', '#select-item').val();
+
 
 $('#select-item').change(function(){
     selectedItem = $('input[name=item]:checked', '#select-item').val();
-    strokeColor = $('input[name=strokeColor]', '#select-item').val();
+});
+
+$('.jscolor').change(function(e){
+    var strokeColor = $(e.target).val(); // color from jscolor element on control panel
+    drawSVG.setColor('#'+strokeColor);
 });
 
 </script>
@@ -167,8 +180,17 @@ $('#generateJson').click(function(){
 </script>
 
 <script>
-    $('#centerImage').click(function(){
-        svgEditor.center();
+$('#centerImage').click(function(){
+    svgEditor.center();
+});
+</script>
+
+<script>
+
+    $('#stroke-width-range').on("change mousemove", function() {
+        var strokeRange = $('#stroke-width-range').val();
+        $('#stroke-width-output').text(strokeRange);
+        drawSVG.setWidth(strokeRange+'px');
     });
 </script>
 
