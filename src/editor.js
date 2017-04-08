@@ -34,9 +34,6 @@ $('#svg-area').mousemove(function(e){
         drawStatus.fY = curPos.y;
 
         itemId = (+ new Date()).toString(); // generate random unique id for figure
-
-        drawSVG.setWidth('4px');
-        drawSVG.setColor('#'+strokeColor); // color from jscolor element on control panel
         
         var drawable = ['rectangle', 'arrow', 'line', 'ellipse'];
 
@@ -57,7 +54,11 @@ $('#svg-area').mousemove(function(e){
 
         if( element && supported_for_save.indexOf(element.tagName) != -1)
         {
-            dataConstructor.storeElement(element);
+            var d_exists = ( element.getAttribute('d') != null );
+
+            if(d_exists){
+                dataConstructor.storeElement(element);
+            }
         }
     }
 });
@@ -134,6 +135,9 @@ $('#svg-editor-area').on('mousewheel', function(event) {
     svgEditor.scale( svgEditor.coordScale + scaleSize );
 });
 
+/*
+    Zoom buttons events.
+*/
 $('.zoom-svg-in').click(function(){
     svgEditor.scale( svgEditor.coordScale + 0.1 );    
 });
@@ -150,4 +154,102 @@ $('#initImage').click(function(){
     dataConstructor.clear();
     var image = prompt('Enter image url:', 'images/test-img/testbg.jpg');
     svgEditor.initImage(image);
+});
+
+
+/*
+    ____________________
+    Mobile touch events:
+*/
+
+/*
+    Touch drawing event
+*/
+$('#svg-area').on( "touchmove" , function( e ) {
+    
+    var e_touch = e.originalEvent.touches[0];
+
+    if(drawStatus.isDrawing){
+        var curPos = svgEditor.getCurPos(e_touch);
+        drawStatus.lX = curPos.x;
+        drawStatus.lY = curPos.y;
+
+        drawSVG.drawByString(selectedItem, itemId, drawStatus.fX, drawStatus.fY, drawStatus.lX, drawStatus.lY);
+    }
+    
+    //Show coordinates in demo:
+    str = 'X:'+svgEditor.getCurPos(e_touch).x+'  Y:'+svgEditor.getCurPos(e_touch).y;
+    $('#current-pos').html(str);
+
+})
+.on( "touchstart" , function(e){
+
+    drawStatus.isDrawing = true;
+
+    var curPos = svgEditor.getCurPos(e.originalEvent.touches[0]);
+    drawStatus.fX = curPos.x;
+    drawStatus.fY = curPos.y;
+
+    itemId = (+ new Date()).toString(); // generate random unique id for figure
+
+    drawSVG.setColor('#'+strokeColor); // color from jscolor element on control panel
+    
+    var drawable = ['rectangle', 'arrow', 'line', 'ellipse'];
+
+    if( drawable.indexOf(selectedItem) != -1 ){
+        drawSVG.createElement(itemId);
+    }
+
+})
+.on( "touchend" ,function(e) {
+
+    drawStatus.isDrawing = false;
+
+    var supported_for_save = ['path'];
+
+    var element = document.getElementById(itemId);
+
+    if( element && supported_for_save.indexOf(element.tagName) != -1)
+    {
+        var d_exists = ( element.getAttribute('d') != null );
+
+        if(d_exists){
+            dataConstructor.storeElement(element);
+        }
+    }
+    
+});
+
+/*
+    Touch dragging event
+*/
+$('#svg-editor-area').on( "touchmove" ,function(e){
+
+    var e_touch = e.originalEvent.touches[0];
+
+    if(dragStatus.isDragging)
+    {
+        var curPosEdit = svgEditor.getCurPos(e_touch);
+            dragStatus.lX = curPosEdit.x;
+            dragStatus.lY = curPosEdit.y;
+
+        svgEditor.drag(dragStatus.fX, dragStatus.fY, dragStatus.lX, dragStatus.lY);
+    }
+
+})
+.on( "touchstart" , function(e){
+
+    var e_touch = e.originalEvent.touches[0];
+
+    var actionIsDrag = (selectedItem == "drag");
+    if( actionIsDrag ){
+        dragStatus.isDragging = true;
+    }
+    
+    var curPosEdit = svgEditor.getCurPos(e_touch);
+        dragStatus.fX = curPosEdit.x;
+        dragStatus.fY = curPosEdit.y;
+})
+.on( "touchend" ,function(e) {
+    dragStatus.isDragging = false;
 });
