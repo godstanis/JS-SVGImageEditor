@@ -24,7 +24,11 @@ var drawSVG = {
         this.strokeWidth = width;
     },
     clear: function(){
-        this.returnElement().innerHTML = '';
+        var element = this.returnElement();
+        
+        while (element.firstChild) {
+            element.removeChild(element.firstChild);
+        }
     },
     returnElement: function(){ //This method returns the element, provided by drawSVG.element (id) field
         return document.getElementById(this.element);
@@ -46,8 +50,10 @@ var drawSVG = {
     createElement: function(id){
         PathHelper.itemId = id; // Change PathHelper itemId
         var element = this.returnElement();
+ 
+        var newPath = this.HTMLhelper.createPath(id, this.strokeWidth, this.strokeColor);
 
-        element.innerHTML += this.HTMLhelper.renderPath(id, this.strokeWidth, this.strokeColor);
+        element.appendChild(newPath);
 
     },
 
@@ -215,7 +221,7 @@ var drawSVG = {
     */
     HTMLhelper: {
 
-        renderPath: function(id, strokeWidth, strokeColor, fill){
+        createPath: function(id, strokeWidth, strokeColor, fill){
             if(strokeWidth === undefined){
                 strokeWidth = "4px";
             }
@@ -225,7 +231,14 @@ var drawSVG = {
             if(fill === undefined){
                 fill = "none";
             }
-            return '<path class="svg-element" id="'+id+'" stroke-width="'+strokeWidth+'" fill="'+fill+'" stroke="'+strokeColor+'"></path>';
+            
+            var newPath = document.createElementNS('http://www.w3.org/2000/svg',"path");    
+            newPath.setAttributeNS(null, "id", id);
+            newPath.setAttributeNS(null, "stroke", strokeColor); 
+            newPath.setAttributeNS(null, "stroke-width", strokeWidth);   
+            newPath.setAttributeNS(null, "fill", fill);
+
+            return newPath;
         },
     },
 
@@ -259,7 +272,7 @@ var PathHelper = {
         if(itemId === undefined){
             itemId = this.itemId;
         }
-        var path = document.getElementById(itemId)
+        var path = document.getElementById(itemId);
         path.setAttribute('d', "M"+X.toString()+","+Y.toString());
         return this;
     },
@@ -269,7 +282,7 @@ var PathHelper = {
         if(itemId === undefined){
             itemId = this.itemId;
         }
-        var path = document.getElementById(itemId)
+        var path = document.getElementById(itemId);
         path.setAttribute('d', path.getAttribute('d') + "L"+X.toString()+","+Y.toString());
         return this;
     },
@@ -279,7 +292,7 @@ var PathHelper = {
         if(itemId === undefined){
             itemId = this.itemId;
         }
-        var path = document.getElementById(itemId)
+        var path = document.getElementById(itemId);
         path.setAttribute('d', path.getAttribute('d') + "z");
     },
 
