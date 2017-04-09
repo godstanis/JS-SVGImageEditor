@@ -1,3 +1,5 @@
+(function () {
+drawSVG.coordScale;
 
 //drawing mouse actions
 var drawStatus = {
@@ -68,21 +70,22 @@ $('#svg-area').mousemove(function(e){
 
 var dragStatus = {
     isDragging: false,
+    editorX: 0,
+    editorY: 0,
     fX: 0,
     fY: 0,
-    lX:0,
-    lY:0
+    lX: 0,
+    lY: 0
 }
 
 $('#svg-editor-area').mousemove(function(e){
 
     if(dragStatus.isDragging)
     {
-        var curPosEdit = svgEditor.getCurPos(e);
-            dragStatus.lX = curPosEdit.x;
-            dragStatus.lY = curPosEdit.y;
+        dragStatus.lX = e.clientX - dragStatus.fX;
+        dragStatus.lY = e.clientY - dragStatus.fY;
 
-        svgEditor.drag(dragStatus.fX, dragStatus.fY, dragStatus.lX, dragStatus.lY);
+        svgEditor.drag(dragStatus.editorX, dragStatus.editorY, dragStatus.lX, dragStatus.lY);
     }
 
 })
@@ -92,10 +95,13 @@ $('#svg-editor-area').mousemove(function(e){
     if( actionIsDrag ){
         dragStatus.isDragging = true;
     }
+
+    dragStatus.editorX = svgEditor.curX;
+    dragStatus.editorY = svgEditor.curY;
+
+    dragStatus.fX = e.clientX;
+    dragStatus.fY = e.clientY;
     
-    var curPosEdit = svgEditor.getCurPos(e);
-        dragStatus.fX = curPosEdit.x;
-        dragStatus.fY = curPosEdit.y;
 })
 .mouseup(function(e) {
     dragStatus.isDragging = false;
@@ -223,11 +229,10 @@ $('#svg-editor-area').on( "touchmove" ,function(e){
 
     if(dragStatus.isDragging)
     {
-        var curPosEdit = svgEditor.getCurPos(e_touch);
-            dragStatus.lX = curPosEdit.x;
-            dragStatus.lY = curPosEdit.y;
+        dragStatus.lX = e_touch.clientX - dragStatus.fX;
+        dragStatus.lY = e_touch.clientY - dragStatus.fY;
 
-        svgEditor.drag(dragStatus.fX, dragStatus.fY, dragStatus.lX, dragStatus.lY);
+        svgEditor.drag(dragStatus.editorX, dragStatus.editorY, dragStatus.lX, dragStatus.lY);
     }
 
 })
@@ -239,11 +244,15 @@ $('#svg-editor-area').on( "touchmove" ,function(e){
     if( actionIsDrag ){
         dragStatus.isDragging = true;
     }
-    
-    var curPosEdit = svgEditor.getCurPos(e_touch);
-        dragStatus.fX = curPosEdit.x;
-        dragStatus.fY = curPosEdit.y;
+    dragStatus.editorX = svgEditor.curX;
+    dragStatus.editorY = svgEditor.curY;
+
+    dragStatus.fX = e_touch.clientX;
+    dragStatus.fY = e_touch.clientY;
 })
 .on( "touchend" ,function(e) {
     dragStatus.isDragging = false;
 });
+
+
+}());
