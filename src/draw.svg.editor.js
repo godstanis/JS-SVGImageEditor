@@ -34,9 +34,9 @@ var svgEditor = {
         this.updateTransformation();
 
     },
-    drag: function(fX, fY, lX, lY){
-        this.curX += lX - fX;
-        this.curY += lY - fY;
+    drag: function(f_editor_X, f_editor_Y, difX, difY){
+        this.curX = f_editor_X+difX;
+        this.curY = f_editor_Y+difY;
         this.updateTransformation();
     },
     scale: function (scale){
@@ -52,9 +52,13 @@ var svgEditor = {
     },
     updateTransformation: function()
     {
-        var translate = 'translate('+this.curX+'px,'+this.curY+'px)';
         var scale = 'scale('+this.coordScale+')';
-        this.returnElement().workArea.setAttribute('style', 'transform:'+scale+' '+translate);
+        var transform = 'transform:'+scale+';';
+        var webkit_transform = '-webkit-transform:'+scale+';';
+
+        this.returnElement()
+            .workArea
+                .setAttribute('style', 'left:'+this.curX+'px;' + 'top:'+this.curY+'px;'+transform+webkit_transform);
     },
     // initialize image and adjust editor elements sizing
     initImage: function( image_path )
@@ -71,8 +75,6 @@ var svgEditor = {
 
             svgElement.style['width'] = imageWidth+'px';
             svgElement.style['height'] = imageHeight+'px';
-
-            bgElement.style['top'] = '-'+(imageHeight)+'px';
 
         }
 
