@@ -26,8 +26,8 @@
 </head>
 <body>
 <div class="zoom-panel">
-    <button class="zoom-btn zoom-svg-in" title="Zoom-in">+</button>
-    <button class="zoom-btn zoom-svg-out" title="Zoom-out">-</button>
+    <i class="sprite sprite-zoom-in zoom-btn zoom-svg-in" title="Zoom-in"></i>
+    <i class="sprite sprite-zoom-out zoom-btn zoom-svg-out" title="Zoom-out"></i>
 </div>
 
 <div class="json-management-panel">
@@ -105,7 +105,7 @@
     <div>
         <label for="stroke-width-range"><b>STROKE WIDTH</b> </label>
         <input id="stroke-width-range" type="range" min="1" max="32" step="1" value="4">
-        <span style="display:inline-block;width:20px;" id="stroke-width-output">4</span>
+        <span style="display:inline-block;width:20px;font-size:150%" id="stroke-width-output">4</span>
     </div>
     <input class="jscolor" value="00AB03" name="strokeColor" readonly="true">
     
@@ -114,7 +114,7 @@
 <div id="svg-editor-area">
     <div id="svg-work-area">
         <div id="svg-image-couple">
-            <svg id="svg-area"  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" shape-rendering="auto">
+            <svg id="svg-area" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" shape-rendering="auto">
             </svg>
             <div id="bg-element">
                 <img id="bg-element-image" src="" alt="image not loaded">

@@ -1,28 +1,22 @@
-
-.brush-preview{
-    width: 32px;
-    height: 32px;
-}
-
 .radio-figure{
     display: inline-block;
 }
+.radio-figure i{
+    background-color: white;
+    border-radius: 5px;
+}
+
 .radio-figure label > input{
     visibility: hidden;
     position: absolute;
 }
 .radio-figure label > input + i{
+    border:3px solid transparent;
+    border-bottom: 4px solid transparent;
     cursor: pointer;
-    border: 3px solid transparent;
 }
 .radio-figure label > input:checked + i{
-    border: 3px solid #27C23D;
-    border-radius: 5px;
-}
-
-.radio-figure i{
-    background-color: white;
-    border-radius: 5px;
+    border-bottom: 4px solid #27C23D;
 }
 
 .radio-tab{

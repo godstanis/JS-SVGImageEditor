@@ -81,7 +81,7 @@ body, html{
 
     padding:10px;
 }
-.zoom-panel button{
+.zoom-panel i{
     width: 32px;
     height: 32px;
     border: none;
@@ -93,6 +93,13 @@ body, html{
     font-weight: bold;
 
     margin-right: 5px;
+
+    background-color: white;
+    display: inline-block;
+}
+
+.zoom-panel i:hover{
+    cursor: pointer;
 }
 
 .functional-btns{
@@ -104,7 +111,8 @@ body, html{
         left:0;
         width: 100%;
         position: fixed;
-        top: 0;
+        top: unset;
+        bottom:0px;
 
         display: inline-block;
         z-index: 1;
@@ -119,17 +127,21 @@ body, html{
 
     .zoom-panel{
 
-        border-radius: 0 10px 0px 0;
+        border-radius: 0 0px 10px 0;
         box-shadow: 0px 0px 15px black;
 
         padding:10px;
 
-        bottom:0;
+        //bottom:0;
+        top:0;
     }
 
     .jscolor{
         height:30px;
-        position: relative;
-        right:100px;
+        position: fixed;
+        right:8px;
+        top:8px;
+        border:4px solid white;
+        box-shadow: 0 0 10px black;
     }
 }
