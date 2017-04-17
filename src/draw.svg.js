@@ -8,62 +8,53 @@
     - now you are ready to go, more info on https://github.com/Stasgar/draw.swg.js
 */
 
-var drawSVG = {
-    element: "", //<svg> id property
-    strokeWidth: '4px',
-    strokeColor: 'green',
-    init: function(element){ //This method will render marker for arrow tip inside <svg>
-        this.element = element;
-    },
-    setColor: function(color)
-    {
-        this.strokeColor = color;
-    },
-    setWidth: function(width)
-    {
-        this.strokeWidth = width;
-    },
-    clear: function(){
-        var element = this.returnElement();
-        
+var drawSVG = (function(){
+
+    var element = ""; //<svg> id property
+    var strokeWidth = '4px';
+    var strokeColor = 'green';
+
+    function initElementById(svg_element){
+        element = document.getElementById(svg_element);
+    };
+
+    function initElementByClass(svg_element){
+        element = document.getElementsByClassName(svg_element)[0];
+    };
+
+    function setColor(color){
+        strokeColor = color;
+    };
+
+    function setWidth(width){
+        strokeWidth = width;
+    }
+
+    function clear(){
         while (element.firstChild) {
             element.removeChild(element.firstChild);
         }
-    },
-    returnElement: function(){ //This method returns the element, provided by drawSVG.element (id) field
-        return document.getElementById(this.element);
-    },
+    };
 
-    deleteObject: function(id){ //deletes an object from DOM
+    function deleteObject(obj_id){
         var deletable = ['path'];//deletable object tags
-        var element = document.getElementById(id);
+        var element = document.getElementById(obj_id);
 
         if(deletable.indexOf(element.tagName) != -1)
         {
             element.parentNode.removeChild(element);
         }
-    },
+    };
 
-    /*
-        Next 'create' method used to insert pre-made structures in <svg> element
-    */
-    createElement: function(id){
+    function createElement(id){
         PathHelper.itemId = id; // Change PathHelper itemId
-        var element = this.returnElement();
  
-        var newPath = this.HTMLhelper.createPath(id, this.strokeWidth, this.strokeColor);
+        var newPath = HTMLhelper.createPath(id, strokeWidth, strokeColor);
 
         element.appendChild(newPath);
+    };
 
-    },
-
-    /*
-        Next 'draw' methods use existing element, created by 'create' method and change it properties.
-        id - id of existing element, that is going to be changed
-        fX, fY - first (X;Y) coordinates to start from
-        lX, lY - last (X;Y) coordinates to end the figure
-    */
-    drawObject: function(itemId, do_create){
+    function drawObject(itemId, do_create){
         if(itemId === undefined){
             itemId = PathHelper.itemId;
         }
@@ -71,14 +62,12 @@ var drawSVG = {
             do_create = true;
         }
 
-        var current = this;
-
         // Do not create the element if param false given
         function createManage(id)
         {
             if(do_create)
             {
-                this.createElement(itemId);
+                createElement(itemId);
             }
             else
             {
@@ -94,7 +83,6 @@ var drawSVG = {
                 PathHelper.lineTo(fX, lY);
                 PathHelper.lineTo(lX, lY);
                 PathHelper.lineTo(lX, fY);
-                PathHelper.lineTo(fX, fY);
                 PathHelper.closePath();
             },
             ellipse: function (fX, fY, lX, lY){
@@ -177,49 +165,78 @@ var drawSVG = {
 
             }
         }
-    },
+    };
 
-    liner: null, //buffer for closure
-    drawLine: function(itemId, X, Y, time_between_lines_ticks){
-        if(this.liner == null){
-            this.liner = this.drawLineFactory();
+    var linerH = null; //buffer for closure
+    function drawLineH(itemId, X, Y, time_between_lines_ticks){
+        if(linerH === null){
+            linerH = drawLineFactoryH();
         }
 
-        return this.liner(itemId, X, Y, time_between_lines_ticks);
-    },
+        return linerH(itemId, X, Y, time_between_lines_ticks);
+    };
     /* 
         This method is used in drawSVG.drawLine().
         You can read more about closures on https://www.w3schools.com/js/js_function_closures.asp
     */
-    drawLineFactory: function() {
-        var counter = 0;
+    function drawLineFactoryH() {
+        var prevX = 0;
+        var prevY = 0;
 
         //Decrease to draw lines more often; increase to draw lines less often.
         //Greater numbers will produce 'low poly' line effect.
-        var TIME_BETWEEN_LINES_TICKS = 10;
-        function drawLineH(itemId, X, Y, time_between_lines_ticks) {
-            if(time_between_lines_ticks === undefined){
-                time_between_lines_ticks = TIME_BETWEEN_LINES_TICKS;
+        var LINE_POLY_LENGTH = 10;
+        function drawLineH(itemId, X, Y, line_poly_length) {
+            if(line_poly_length === undefined){
+                line_poly_length = LINE_POLY_LENGTH;
             }
-            counter++;
-            //If a line was recently ended, we won't do anything for 10 ticks
-            if (counter>=time_between_lines_ticks) {
-                counter = 0;
-                var path = document.getElementById(itemId);
-                if (path.getAttribute('d')) {
-                    PathHelper.lineTo(X, Y, itemId);
-                } else {
-                    PathHelper.moveTo(X, Y, itemId); // if path has not been started yet
+
+            var path = document.getElementById(itemId);
+            if (path.getAttribute('d')) {
+                var a = prevX - X;
+                var b = prevY - Y;
+
+                var distance = Math.sqrt( a*a + b*b );
+
+                if(distance <= line_poly_length){
+                    return true
                 }
+
+                PathHelper.lineTo(X, Y, itemId);
+
+                prevX = X;
+                prevY = Y;
+            } else {
+                PathHelper.moveTo(X, Y, itemId); // if path has not been started yet
             }
+        
         }
+
         return drawLineH;
-    },
+    };
+
+    /*
+        Next xxxByString methods provide simple interface for 
+        string based switching (for example Radio buttons input)
+    */
+    function drawByString(string, itemId, fX, fY, lX, lY){ 
+        switch(string)
+            {
+                case "rectangle": drawObject(itemId, false).rectangle(fX, fY, lX, lY)
+                    break;
+                case "arrow": drawObject(itemId, false).arrow(fX, fY, lX, lY)
+                    break;
+                case "line": drawLineH(itemId, lX, lY, 6)
+                    break;
+                case "ellipse": drawObject(itemId, false).ellipse(fX, fY, lX, lY)
+            }
+    };
+
 
     /*
         HTMLhelper is used to provide easy html implementation of base objects.
     */
-    HTMLhelper: {
+    var HTMLhelper = {
 
         createPath: function(id, strokeWidth, strokeColor, fill){
             if(strokeWidth === undefined){
@@ -234,72 +251,66 @@ var drawSVG = {
             
             var newPath = document.createElementNS('http://www.w3.org/2000/svg',"path");    
             newPath.setAttributeNS(null, "id", id);
-            newPath.setAttributeNS(null, "stroke", strokeColor); 
-            newPath.setAttributeNS(null, "stroke-width", strokeWidth);   
+            newPath.setAttributeNS(null, "stroke", strokeColor);
+            newPath.setAttributeNS(null, "stroke-width", strokeWidth);
+            newPath.setAttributeNS(null, "class", "svg-element");
             newPath.setAttributeNS(null, "fill", fill);
 
             return newPath;
         },
-    },
+    };
 
-    /*
-        Next xxxByString methods provide simple interface for 
-        string based switching (for example Radio buttons input)
-    */
-    drawByString: function(string, itemId, fX, fY, lX, lY){ 
-        switch(string)
-            {
-                case "rectangle": this.drawObject(itemId, false).rectangle(fX, fY, lX, lY)
-                    break;
-                case "arrow": this.drawObject(itemId, false).arrow(fX, fY, lX, lY)
-                    break;
-                case "line": this.drawLine(itemId, lX, lY, 4)
-                    break;
-                case "ellipse": this.drawObject(itemId, false).ellipse(fX, fY, lX, lY)
+    var PathHelper = {
+        itemId:false,
+
+        //Moves 'virtual brush' to the provided coordinates. If not used - 'virtual brush' will start from (0;0)
+        moveTo: function(X, Y, itemId){
+            if(itemId === undefined){
+                itemId = this.itemId;
             }
-    },
+            var path = document.getElementById(itemId);
+            path.setAttribute('d', "M"+X.toString()+","+Y.toString());
+            return this;
+        },
 
-};
+        //Draws the line from 'virtual brush' position to the provided coordinates
+        lineTo: function(X, Y, itemId){
+            if(itemId === undefined){
+                itemId = this.itemId;
+            }
+            var path = document.getElementById(itemId);
+            path.setAttribute('d', path.getAttribute('d') + "L"+X.toString()+","+Y.toString());
+            return this;
+        },
 
-/*
-    PathHelper implements methods of editing existing paths
-*/
-var PathHelper = {
-    itemId:false,
+        //Closes the path connectig the first point with the last
+        closePath: function(itemId){
+            if(itemId === undefined){
+                itemId = this.itemId;
+            }
+            var path = document.getElementById(itemId);
+            path.setAttribute('d', path.getAttribute('d') + "z");
+        },
 
-    //Moves 'virtual brush' to the provided coordinates. If not used - 'virtual brush' will start from (0;0)
-    moveTo: function(X, Y, itemId){
-        if(itemId === undefined){
-            itemId = this.itemId;
-        }
-        var path = document.getElementById(itemId);
-        path.setAttribute('d', "M"+X.toString()+","+Y.toString());
-        return this;
-    },
+        //itemId setter
+        setIemId: function(itemId)
+        {
+            this.itemId = itemId;
+        },
 
-    //Draws the line from 'virtual brush' position to the provided coordinates
-    lineTo: function(X, Y, itemId){
-        if(itemId === undefined){
-            itemId = this.itemId;
-        }
-        var path = document.getElementById(itemId);
-        path.setAttribute('d', path.getAttribute('d') + "L"+X.toString()+","+Y.toString());
-        return this;
-    },
+    };
 
-    //Closes the path connectig the first point with the last
-    closePath: function(itemId){
-        if(itemId === undefined){
-            itemId = this.itemId;
-        }
-        var path = document.getElementById(itemId);
-        path.setAttribute('d', path.getAttribute('d') + "z");
-    },
+    return{
+        initElementById: initElementById,
+        initElementByClass: initElementByClass,
+        createElement: createElement,
+        PathHelper: PathHelper,
+        setColor: setColor,
+        setWidth: setWidth,
+        drawObject: drawObject,
+        drawLine: drawLineH,
+        drawByString: drawByString,
+        clear: clear,
+    }
 
-    //itemId setter
-    setIemId: function(itemId)
-    {
-        this.itemId = itemId;
-    },
-
-};
+})();
