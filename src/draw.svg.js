@@ -311,6 +311,7 @@ var drawSVG = (function(){
         drawLine: drawLineH,
         drawByString: drawByString,
         clear: clear,
+        deleteObject: deleteObject,
     }
 
 })();

@@ -84,7 +84,6 @@
         {
             dragStatus.lX = e.clientX - dragStatus.fX;
             dragStatus.lY = e.clientY - dragStatus.fY;
-            //console.log(dragStatus.editorX);
             svgEditor.drag(dragStatus.editorX, dragStatus.editorY, dragStatus.lX, dragStatus.lY);
         }
 
