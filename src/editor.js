@@ -1,5 +1,3 @@
-(function () {
-
 
     //drawing mouse actions
     var drawStatus = {
@@ -95,8 +93,8 @@
             dragStatus.isDragging = true;
         }
 
-        dragStatus.editorX = svgEditor.curX;
-        dragStatus.editorY = svgEditor.curY;
+        dragStatus.editorX = svgEditor.curX();
+        dragStatus.editorY = svgEditor.curY();
 
         dragStatus.fX = e.clientX;
         dragStatus.fY = e.clientY;
@@ -149,18 +147,18 @@
     */
     $('#svg-editor-area').on('mousewheel', function(event) {
         var scaleSize = event.deltaY * 0.1;
-        svgEditor.scale( svgEditor.coordScale + scaleSize );
+        svgEditor.scale( svgEditor.coordScale() + scaleSize );
     });
 
     /*
         Zoom buttons events.
     */
     $('.zoom-svg-in').click(function(){
-        svgEditor.scale( svgEditor.coordScale + 0.1 );    
+        svgEditor.scale( svgEditor.coordScale() + 0.1 );    
     });
 
     $('.zoom-svg-out').click(function(){
-        svgEditor.scale( svgEditor.coordScale - 0.1);
+        svgEditor.scale( svgEditor.coordScale() - 0.1);
     });
 
 
@@ -255,8 +253,8 @@
         if( actionIsDrag ){
             dragStatus.isDragging = true;
         }
-        dragStatus.editorX = svgEditor.curX;
-        dragStatus.editorY = svgEditor.curY;
+        dragStatus.editorX = svgEditor.curX();
+        dragStatus.editorY = svgEditor.curY();
 
         dragStatus.fX = e_touch.clientX;
         dragStatus.fY = e_touch.clientY;
@@ -266,4 +264,4 @@
     });
 
 
-}());
+

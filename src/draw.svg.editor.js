@@ -1,72 +1,80 @@
-var svgEditor = {
-    workAreaId: "", // element, affected by scaling/translating
-    backgroundElementId: "",
-    svgElementId: "",
-    coordScale: 1.00,
-    maxScale: 2,
-    minScale: 0.3,
-    curX: 0,
-    curY:0,
-    init: function(workAreaId, svgElementId, backgroundElementId){ 
-        this.workAreaId = workAreaId;
-        this.svgElementId = svgElementId;
-        this.backgroundElementId = backgroundElementId;
-    },
-    returnElement: function(){ //service function for implementing element return
-        return {
-            workArea:   document.getElementById(this.workAreaId),
-            background: document.getElementById(this.backgroundElementId),
-            svg:        document.getElementById(this.svgElementId),
-        }
-    },
-    center: function(){
+
+var svgEditor = (function(){
+    console.log('Editor initialized');
+    var workAreaElement= ""; // element, affected by scaling/translating
+    var backgroundElement= "";
+    var svgElement= "";
+    var coordScale= 1.00;
+    var maxScale= 2;
+    var minScale= 0.3;
+    var curX = 0;
+    var curY = 0;
+
+    function init(workAreaId, svgElementId, backgroundElementId){ 
+        workAreaElement = document.getElementById(workAreaId);
+        svgElement = document.getElementById(svgElementId);
+        backgroundElement = document.getElementById(backgroundElementId);
+    };
+
+    function getCurX(){
+        return curX;
+    };
+
+    function getCurY(){
+        return curY;
+    };
+
+    function getScale(){
+        return coordScale;
+    };
+
+    function center(){
         var windowCenterX = window.innerWidth / 2;
         var windowCenterY = window.innerHeight / 2;
 
-        var svgRect = this.returnElement().svg.getBoundingClientRect();
+        var svgRect = svgElement.getBoundingClientRect();
 
-        var currentSvgCenterX = (svgRect.width / 2) / this.coordScale;
-        var currentSvgCenterY = (svgRect.height / 2) / this.coordScale;
+        var currentSvgCenterX = (svgRect.width / 2) / coordScale;
+        var currentSvgCenterY = (svgRect.height / 2) / coordScale;
 
-        this.curX = windowCenterX - currentSvgCenterX;
-        this.curY = windowCenterY - currentSvgCenterY;
+        curX = windowCenterX - currentSvgCenterX;
+        curY = windowCenterY - currentSvgCenterY;
 
-        this.updateTransformation();
+        //updateTransformation();
+        setPosition(curX, curY);
 
-    },
-    drag: function(f_editor_X, f_editor_Y, difX, difY){
-        this.curX = f_editor_X+difX;
-        this.curY = f_editor_Y+difY;
-        this.updateTransformation();
-    },
-    scale: function (scale){
-        scale = parseFloat(scale.toFixed(2));
+    };
+    function drag(f_editor_X, f_editor_Y, difX, difY){
+        curX = f_editor_X+difX;
+        curY = f_editor_Y+difY;
 
-        if (( this.minScale <= scale ) && ( scale <= this.maxScale )){
-            this.coordScale = scale
-            this.updateTransformation();
+        setPosition(curX, curY);
+    };
+    function scale(in_scale){
+
+        var scale = parseFloat(in_scale.toFixed(2));
+
+        if (( minScale <= in_scale ) && ( in_scale <= maxScale )){
+            coordScale = in_scale
+            setScale(coordScale);
             return true;
         }
 
         return false;
-    },
-    updateTransformation: function()
+    };
+    function setPosition(left, top){
+        workAreaElement.style.left = left+'px';
+        workAreaElement.style.top = top+'px';
+    };
+    function setScale(in_scale)
     {
-        var scale = 'scale('+this.coordScale+')';
-        var transform = 'transform:'+scale+';';
-        var webkit_transform = '-webkit-transform:'+scale+';';
-
-        this.returnElement()
-            .workArea
-                .setAttribute('style', 'left:'+this.curX+'px;' + 'top:'+this.curY+'px;'+transform+webkit_transform);
-    },
+        workAreaElement.style.transform = "scale("+in_scale+")";
+    };
     // initialize image and adjust editor elements sizing
-    initImage: function( image_path )
+    function initImage( image_path )
     {
 
-        var bgElement = this.returnElement().background;
-        var svgElement = this.returnElement().svg;
-        var bgImg = bgElement.getElementsByTagName('img')[0];
+        var bgImg = backgroundElement.getElementsByTagName('img')[0];
 
         function initImgSizing(){
             
@@ -82,33 +90,47 @@ var svgEditor = {
             image_element.setAttribute('src', image_path);
         }
 
-        this.scale(1);
+        scale(1);
 
         setImage(bgImg, image_path);
 
         bgImg.onload = function(){
             initImgSizing();
-            this.center();
-        }.bind(this);
+            center();
+        };
         
-    },
-    getOffset: function(element){ //Service method, providing current information about <svg> relative position
+    };
+    function getOffset(element){ //Service method, providing current information about <svg> relative position
         var box = element.getBoundingClientRect();
         return {
             top: box.top + pageYOffset,
             left: box.left + pageXOffset
         };
-    },
-    getCurPos: function(e, scale){ //Returns current mouse position in relative <svg> coordinates
+    };
+    function getCurPos(e, scale){ //Returns current mouse position in relative <svg> coordinates
         if(scale === undefined){
-            scale = this.coordScale;
+            scale = coordScale;
         }
-        var svg = this.returnElement().workArea;
-        var x = e.pageX - this.getOffset(svg).left;
-        var y = e.pageY - this.getOffset(svg).top;
+        var svg = workAreaElement;
+        var x = e.pageX - getOffset(svg).left;
+        var y = e.pageY - getOffset(svg).top;
         return {
             x: Math.round(x*1/scale),
             y: Math.round(y*1/scale)
         }
-    },
-}
+    };
+
+    return {
+        init: init,
+        center: center,
+        drag: drag,
+        scale: scale,
+        initImage: initImage,
+        getOffset: getOffset,
+        getCurPos: getCurPos,
+        curX: getCurX,
+        curY: getCurY,
+        coordScale: getScale,
+    };
+
+})();
