@@ -24,7 +24,7 @@ Simple image editor, that uses SVG.
 #### Browser support
 
 <table>
-  <th>Supported</th>
+  <th>:heavy_check_mark: Supported</th>
   <tr>
     <td>
       <img width="15px" src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_32x32.png" alt="">
@@ -49,7 +49,7 @@ Simple image editor, that uses SVG.
       <span>IE/Edge</span>
      </td>
   </tr>
-  <th>Not supported</th>
+  <th>:heavy_multiplication_x: Not supported</th>
   <tr>
     <td>
       <img width="15px" src="https://github.com/alrra/browser-logos/blob/master/src/opera/opera_32x32.png" alt="">
