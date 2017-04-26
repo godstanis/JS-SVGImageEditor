@@ -3,7 +3,6 @@
 }
 .radio-figure i{
     background-color: white;
-    border-radius: 5px;
 }
 
 .radio-figure label > input{
@@ -12,7 +11,7 @@
 }
 .radio-figure label > input + i{
     border:3px solid transparent;
-    border-bottom: 4px solid transparent;
+    border-bottom: 3px solid transparent;
     cursor: pointer;
 }
 .radio-figure label > input:checked + i{
@@ -20,5 +19,35 @@
 }
 
 .radio-tab{
-    margin:5px;
+    display: inline-block;
+    height: 38px;
 }
+
+.functional-btns{
+    margin: 0;
+    height: 38px;
+}
+.functional-btns i{
+    background-color: white;
+    border:3px solid transparent;
+    width: 32px;
+    height: 32px;
+    padding: 1;
+
+    display: inline-block;
+
+    cursor: pointer;
+}
+
+.buttons-separator{
+    display: inline-block;
+    height: 38px;
+    border: 1px solid #797979;
+}
+
+@media only screen and (max-width:440px){
+    .buttons-separator{
+        display: none;
+    }
+}
+
