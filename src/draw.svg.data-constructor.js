@@ -3,23 +3,23 @@
     Can be used to generate json representation of drawing objects for later saving.
 */
 
-var dataConstructor = {
-    elements: {}, // object that contains our svg elements
-    storeElement: function(element){ // function to add new svg element to 'elements' object.
+var dataConstructor = (function(){
+    var elements = {}; // object that contains our svg elements
+    function storeElement(element){ // function to add new svg element to 'elements' object.
         var item_id = element.id;
 
-        this.elements[item_id] = this.createObjectFromPath(element);
-    },
+        elements[item_id] = createObjectFromPath(element);
+    };
 
-    removeElement: function(element_id){
-        delete this.elements[element_id];
+    function removeElement(element_id){
+        delete elements[element_id];
         console.log ('removed element with id:'+element_id);
-    },
+    };
 
     /*
         Generates js object representing the given html svg path element
     */
-    createObjectFromPath: function(element){
+    function createObjectFromPath(element){
 
         return {
             'id': element.id,
@@ -29,21 +29,21 @@ var dataConstructor = {
             'd': element.getAttribute('d'),
         };
             
-    },
-    generateJSON: function(){ //generates a JSON string of elements collection
-        return JSON.stringify(this.elements);
-    },
-    generateObject: function(json_string)
+    };
+    function generateJSON(){ //generates a JSON string of elements collection
+        return JSON.stringify(elements);
+    };
+    function generateObject(json_string)
     {
         return JSON.parse(json_string);
-    },
+    };
     /*
         Draws the on-screen elements with drawSVG using JSON
     */
-    generateElementsObjFromJson: function(drawSVG, json_string)
+    function generateElementsObjFromJson(drawSVG, json_string)
     {
 
-        var obj = this.generateObject(json_string);
+        var obj = generateObject(json_string);
 
         for(var id in obj)
         {
@@ -55,17 +55,17 @@ var dataConstructor = {
                     drawSVG.createElement(id);
                     element = document.getElementById(id);
  
-                    this.constructElementFromObj().path(element, curObj);
+                    constructElementFromObj().path(element, curObj);
 
-                    this.storeElement(element);
+                    storeElement(element);
 
                 break;
                 case 'marker':
                 break;
             }
         }
-    },
-    constructElementFromObj: function(){
+    };
+    function constructElementFromObj(){
         return {
             path: function(element, obj){
 
@@ -74,9 +74,21 @@ var dataConstructor = {
                 element.setAttribute('stroke-width', obj['width']);
             }
         }
-    },
-    clear: function(){ //clears element object
-        this.elements = {};
-    }
-}
+    };
+    function clear(){ //clears element object
+        elements = {};
+    };
+
+    return {
+        'elements': elements,
+        'storeElement': storeElement,
+        'removeElement': removeElement,
+        'createObjectFromPath': createObjectFromPath,
+        'generateJSON': generateJSON,
+        'generateObject': generateObject,
+        'generateElementsObjFromJson': generateElementsObjFromJson,
+        'constructElementFromObj': constructElementFromObj,
+        'clear': clear
+    };
+})();
 
